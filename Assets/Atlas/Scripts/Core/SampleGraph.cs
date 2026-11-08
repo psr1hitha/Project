@@ -1,0 +1,42 @@
+namespace Atlas
+{
+    /// <summary>
+    /// Built-in copy of a CardDemo-style map, used only when Resources/architecture.json is missing.
+    /// B2 owns the real file (data/architecture.json); copy it into Assets/Resources/ to override this.
+    /// File names follow AWS CardDemo naming; B2 should check them against the real repo.
+    /// </summary>
+    public static class SampleGraph
+    {
+        public const string Json = @"{
+  ""nodes"": [
+    { ""id"": ""signon"",            ""name"": ""Sign-on screen"",       ""kind"": ""online program"", ""feature"": ""Access"",     ""files"": [""COSGN00C.cbl""], ""summary"": ""CICS screen where users log in. Checks the user ID and password against the security file and routes to the main menu."", ""x"": -0.27, ""y"": 0.0, ""z"": -0.17 },
+    { ""id"": ""main_menu"",         ""name"": ""Main menu"",            ""kind"": ""online program"", ""feature"": ""Access"",     ""files"": [""COMEN01C.cbl""], ""summary"": ""Lists the options a user can pick and transfers control to the matching program."", ""x"": -0.13, ""y"": 0.0, ""z"": -0.21 },
+    { ""id"": ""account_view"",      ""name"": ""Account view"",         ""kind"": ""online program"", ""feature"": ""Accounts"",   ""files"": [""COACTVWC.cbl""], ""summary"": ""Shows an account's balance, limits and customer details by reading the accounts and customer files."", ""x"": 0.0, ""y"": 0.0, ""z"": -0.22 },
+    { ""id"": ""card_list"",         ""name"": ""Card list"",            ""kind"": ""online program"", ""feature"": ""Cards"",      ""files"": [""COCRDLIC.cbl""], ""summary"": ""Pages through the credit cards linked to an account."", ""x"": 0.13, ""y"": 0.0, ""z"": -0.21 },
+    { ""id"": ""payment_entry"",     ""name"": ""Bill payment"",         ""kind"": ""online program"", ""feature"": ""Billing"",    ""files"": [""COBIL00C.cbl""], ""summary"": ""Lets a customer pay their balance. Records the payment as a new transaction for the nightly batch to post."", ""x"": 0.27, ""y"": 0.0, ""z"": -0.17 },
+    { ""id"": ""accounts_file"",     ""name"": ""Accounts file"",        ""kind"": ""data file"",      ""feature"": ""Accounts"",   ""files"": [""ACCTDATA (VSAM)""], ""summary"": ""Master record for every account: balance, credit limit, open date and status."", ""x"": -0.12, ""y"": 0.0, ""z"": 0.0 },
+    { ""id"": ""cards_file"",        ""name"": ""Cards file"",           ""kind"": ""data file"",      ""feature"": ""Cards"",      ""files"": [""CARDDATA (VSAM)""], ""summary"": ""One record per card, linked to its account."", ""x"": 0.04, ""y"": 0.0, ""z"": -0.04 },
+    { ""id"": ""transactions_file"", ""name"": ""Transactions file"",    ""kind"": ""data file"",      ""feature"": ""Billing"",    ""files"": [""TRANSACT (VSAM)""], ""summary"": ""Every purchase, payment and interest charge, waiting to be posted or already posted."", ""x"": 0.2, ""y"": 0.0, ""z"": 0.02 },
+    { ""id"": ""posting"",           ""name"": ""Transaction posting"",  ""kind"": ""batch program"",  ""feature"": ""Billing"",    ""files"": [""CBTRN02C.cbl""], ""summary"": ""Nightly batch that validates the day's transactions and posts them to account balances."", ""x"": 0.15, ""y"": 0.0, ""z"": 0.19 },
+    { ""id"": ""interest_calc"",     ""name"": ""Interest calculation"", ""kind"": ""batch program"",  ""feature"": ""Billing"",    ""files"": [""CBACT04C.cbl""], ""summary"": ""Calculates monthly interest and posts it to accounts."", ""x"": -0.04, ""y"": 0.0, ""z"": 0.2 },
+    { ""id"": ""statements"",        ""name"": ""Statement generation"", ""kind"": ""batch program"",  ""feature"": ""Statements"", ""files"": [""CBSTM03A.CBL""], ""summary"": ""Builds monthly customer statements from accounts and transactions."", ""x"": -0.23, ""y"": 0.0, ""z"": 0.16 }
+  ],
+  ""edges"": [
+    { ""from"": ""signon"",        ""to"": ""main_menu"",         ""label"": ""routes to"" },
+    { ""from"": ""main_menu"",     ""to"": ""account_view"",      ""label"": ""routes to"" },
+    { ""from"": ""main_menu"",     ""to"": ""card_list"",         ""label"": ""routes to"" },
+    { ""from"": ""main_menu"",     ""to"": ""payment_entry"",     ""label"": ""routes to"" },
+    { ""from"": ""account_view"",  ""to"": ""accounts_file"",     ""label"": ""reads"" },
+    { ""from"": ""card_list"",     ""to"": ""cards_file"",        ""label"": ""reads"" },
+    { ""from"": ""payment_entry"", ""to"": ""accounts_file"",     ""label"": ""reads"" },
+    { ""from"": ""payment_entry"", ""to"": ""transactions_file"", ""label"": ""writes"" },
+    { ""from"": ""posting"",       ""to"": ""transactions_file"", ""label"": ""reads"" },
+    { ""from"": ""posting"",       ""to"": ""accounts_file"",     ""label"": ""writes"" },
+    { ""from"": ""interest_calc"", ""to"": ""accounts_file"",     ""label"": ""writes"" },
+    { ""from"": ""interest_calc"", ""to"": ""transactions_file"", ""label"": ""writes"" },
+    { ""from"": ""statements"",    ""to"": ""accounts_file"",     ""label"": ""reads"" },
+    { ""from"": ""statements"",    ""to"": ""transactions_file"", ""label"": ""reads"" }
+  ]
+}";
+    }
+}
